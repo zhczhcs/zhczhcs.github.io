@@ -1,11 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>zhc</title>
-</head>
-<body>
-    <h1>张瀚冲的个人主页</h1>
-    <h1>Hello ~</h1>
-</body>
-</html>
+---
+layout: default
+title: ZHC 的博客主页
+---
+
+<h1>一些介绍</h1>
+<p>我是 ZHC，欢迎来到我的博客。本站点主要用于备份我发在 CSDN 上的博客，以及一些有趣尝试的纪录</p>
+
+<h1>最新文章</h1>
+
+<ul>
+    {% for post in site.posts %}
+    <li>
+        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+        <p>{{ post.excerpt }}</p>
+    </li>
+    {% endfor %}
+</ul>
+
