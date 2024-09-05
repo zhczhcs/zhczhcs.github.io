@@ -3,8 +3,11 @@ layout: category
 title: CTF
 info: 本专栏存放的是 CTF 相关内容的笔记、问题及其解决方案
 ---
-<h2>本专栏存放的是 CTF 相关内容的笔记、问题及其解决方案</h2>
+<link rel="stylesheet" type="text/css" href="/assets/css/blogslist.css"> 
+<p>本专栏存放的是 CTF 相关内容的笔记、问题及其解决方案</p>
 <h1>最新文章</h1>
+<main>
+<ul>
 {% for post in site.posts %}
     {% if post.category == "CTF" %}
         
@@ -15,4 +18,6 @@ info: 本专栏存放的是 CTF 相关内容的笔记、问题及其解决方案
     
     {% endif %}
 {% endfor %}
+<ul>
+</main>
 

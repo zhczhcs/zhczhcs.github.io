@@ -3,17 +3,21 @@ layout: default
 title: ZHC 的博客主页
 ---
 
+
+<link rel="stylesheet" type="text/css" href="/assets/css/blogslist.css"> 
 <h1>Welcome!</h1>
 <p>我是 ZHC，欢迎来到我的博客。本站点主要用于纪录一些做CTF题的心得，以及一些有趣的尝试</p>
 
 <h1>最新文章</h1>
 
-<ul>
-    {% for post in site.posts %}
-    <li>
-        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-        <p>{{ post.excerpt }}</p>
-    </li>
-    {% endfor %}
-</ul>
+<main>
+    <ul>
+        {% for post in site.posts %}
+        <li>
+            <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+            <p>{{ post.excerpt }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</main>
 
