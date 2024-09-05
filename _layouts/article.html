@@ -8,15 +8,29 @@
         <link rel="stylesheet" type="text/css" href="/assets/css/headerstyle.css" />
     </head>
     <body>
-        <div class="stackedit__html">
+    <br>
+    <br>
+        <div class="center-text">
             {% include navigation.html %}
-            <h1>{{ page.title }}</h1>
-            <div class="bloginfo">
-                <p class="info">{{ page.date | date: "%Y-%m-%d" }} <a href="">{{page.column}}</a></p>
+            <div style="text-align: center;">
+                 <h1>{{ page.title }}
+                 
+                 
+                 </h1>
+		</div>
+            <div style="text-align: center;">
+                 <h1>
+                 
+                 {{ page.date | date: "%Y-%m-%d" }}
+                 </h1>
+		</div>
+            <div class="center-text">
+                <p class="center-text"> <a href="">{{page.column}}</a></p>
             </div>
-            
             {{ content }}
+            
         </div>
+        
     </body>
 </html>
 

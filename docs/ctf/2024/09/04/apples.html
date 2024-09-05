@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>我的第一篇博客</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/assets/css/blogslist.css" />
+        <link rel="stylesheet" type="text/css" href="/assets/css/headerstyle.css" />
+    </head>
+    <body>
+    <br>
+    <br>
+        <div class="center-text">
+            <div class="header">
+    
+        <a href="/index.html" class="headerItem">
+            主页
+        </a>
+    
+        <a href="/ctf.html" class="headerItem">
+            CTF
+        </a>
+    
+        <a href="/unix.html" class="headerItem">
+            UNIX
+        </a>
+    
+</div>
+
+
+            <div style="text-align: center;">
+                 <h1>我的第一篇博客
+                 
+                 
+                 </h1>
+		</div>
+            <div style="text-align: center;">
+                 <h1>
+                 
+                 2024-09-04
+                 </h1>
+		</div>
+            <div class="center-text">
+                <p class="center-text"> <a href=""></a></p>
+            </div>
+            <p>python脚本  快速计算网页50道计算题</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="n">time</span>
+
+
+<span class="c1"># 爬取网页内容的函数
+</span><span class="k">def</span> <span class="nf">fetch_webpage</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">.</span><span class="nf">raise_for_status</span><span class="p">()</span>  <span class="c1"># 检查请求是否成功
+</span>        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Error fetching </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="c1"># 发送POST请求的函数//这两本质一样的。
+</span><span class="k">def</span> <span class="nf">send_post_request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">.</span><span class="nf">raise_for_status</span><span class="p">()</span>  <span class="c1"># 检查请求是否成功
+</span>        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Error posting to </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="c1"># 主函数
+</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># 要爬取的网页URL
+</span>    <span class="n">fetch_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://challenge.basectf.fun:36513/</span><span class="sh">'</span>
+    <span class="c1"># 要发送POST请求的URL
+</span>    <span class="n">post_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://challenge.basectf.fun:36513/</span><span class="sh">'</span>
+
+    <span class="c1"># 示例Cookie值（根据实际情况修改）
+</span>    <span class="n">cookies</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">PHPSESSID</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">jc0o43u332d9d4106e4i3q20r9</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">userid</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">your-user-id</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">token</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">your-token</span><span class="sh">'</span>
+    <span class="p">}</span>
+
+    <span class="c1"># 创建一个会话
+</span>    <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nc">Session</span><span class="p">()</span>
+    <span class="n">session</span><span class="p">.</span><span class="n">cookies</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">cookies</span><span class="p">)</span>
+    <span class="n">webpage_content</span> <span class="o">=</span> <span class="nf">fetch_webpage</span><span class="p">(</span><span class="n">fetch_url</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+    <span class="c1"># 执行50次循环
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Attempt </span><span class="si">{</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">webpage_content</span><span class="p">)</span>
+
+        <span class="c1"># 找到算术问题
+</span>        <span class="n">text1</span> <span class="o">=</span> <span class="n">webpage_content</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">second </span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">text1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">text2</span> <span class="o">=</span> <span class="n">text1</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">?</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">text2</span><span class="p">:</span>
+                <span class="n">problem</span> <span class="o">=</span> <span class="n">text2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="nf">print</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+
+                <span class="c1"># 计算答案
+</span>                <span class="n">answer</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">if</span> <span class="sh">'</span><span class="s">+</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">:</span>
+                    <span class="n">operands</span> <span class="o">=</span> <span class="n">problem</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">+</span><span class="sh">"</span><span class="p">)</span>
+                    <span class="n">answer</span> <span class="o">=</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="sh">'</span><span class="s">-</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">:</span>
+                    <span class="n">operands</span> <span class="o">=</span> <span class="n">problem</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">-</span><span class="sh">"</span><span class="p">)</span>
+                    <span class="n">answer</span> <span class="o">=</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="sh">'</span><span class="s">×</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">:</span>
+                    <span class="n">operands</span> <span class="o">=</span> <span class="n">problem</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">×</span><span class="sh">"</span><span class="p">)</span>
+                    <span class="n">answer</span> <span class="o">=</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="sh">'</span><span class="s">÷</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">:</span>
+                    <span class="n">operands</span> <span class="o">=</span> <span class="n">problem</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">÷</span><span class="sh">"</span><span class="p">)</span>
+                    <span class="n">answer</span> <span class="o">=</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="nf">eval</span><span class="p">(</span><span class="n">operands</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># 注意除法取整用 //
+</span>
+                <span class="k">if</span> <span class="n">answer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Answer: </span><span class="si">{</span><span class="n">answer</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+                    <span class="c1"># 发送计算结果
+</span>                    <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">answer</span><span class="sh">'</span><span class="p">:</span> <span class="n">answer</span><span class="p">}</span>
+                    <span class="n">webpage_content</span> <span class="o">=</span> <span class="nf">send_post_request</span><span class="p">(</span><span class="n">post_url</span><span class="p">,</span> <span class="n">post_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">webpage_content</span><span class="p">:</span>
+                        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">POST Response after calculation: </span><span class="si">{</span><span class="n">webpage_content</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">No valid operation found in the string</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Failed to split the text to get the problem</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Failed to split the response text</span><span class="sh">"</span><span class="p">)</span>
+
+        <span class="c1"># 每次请求之间等待5秒
+</span>        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="nf">main</span><span class="p">()</span>
+</code></pre></div></div>
+<div style="text-align: center;">
+    <img src="/assets/images/2.png" alt="描述" width="600" height="300" />
+    <img src="/assets/images/3.png" alt="描述" width="600" height="400" />
+</div>
+
+
+            
+        </div>
+        
+    </body>
+</html>
+
